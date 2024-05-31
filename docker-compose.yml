@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.8-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "5671:5671"  # AMQPS port
+      - "15672:15672" # Management UI
+    volumes:
+      - ./certs:/etc/rabbitmq/certs:ro
+      - ./rabbitmq.conf:/tmp/rabbitmq.conf:ro
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    command: sh -c 'cp /tmp/rabbitmq.conf /etc/rabbitmq/rabbitmq.conf && chmod 777 /etc/rabbitmq/rabbitmq.conf && rabbitmq-server'
